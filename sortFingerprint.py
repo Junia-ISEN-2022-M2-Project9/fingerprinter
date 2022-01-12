@@ -15,6 +15,7 @@ def sortFile(fileLocation):
             if i == len(listOfFingerprints)-1 and not testMatch:
                 listOfFingerprints.append(line)
                 numberOfsameFingerprint.append(1)
+    print(listOfFingerprints)
     print(numberOfsameFingerprint)
     file.close()
 
