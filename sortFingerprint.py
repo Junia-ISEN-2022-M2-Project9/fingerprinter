@@ -3,6 +3,7 @@ import time
 
 def sortFile(fileLocation):
     listOfFingerprints = ["liste contenant toutes fingerprints differentes"]
+    listOfSplitedFingerprints=[]
     numberOfsameFingerprint = ["nombre de fringerprint semblable a celle du même indice dans liste precedente"]
     file = open(fileLocation, "r")
     for line in file:
@@ -15,9 +16,28 @@ def sortFile(fileLocation):
             if i == len(listOfFingerprints)-1 and not testMatch:
                 listOfFingerprints.append(line)
                 numberOfsameFingerprint.append(1)
-    print(listOfFingerprints)
-    print(numberOfsameFingerprint)
+    for x in listOfFingerprints:
+        listOfSplitedFingerprints.append(x.split('|'))
+    print(calculateDistanceBetweenFingerprints(listOfSplitedFingerprints))
     file.close()
+
+def calculateDistanceBetweenFingerprints(aListOfSplitedFingerprints):
+    listOfDistances=[]
+    indice=0
+    while len(aListOfSplitedFingerprints)!=1:
+        listOfDistances.append([])
+        fingerprintToCompare= aListOfSplitedFingerprints.pop(0)
+        for i in range(0,len(aListOfSplitedFingerprints)):
+            listOfDistances[indice].append(sumSubcategoriesDistances(fingerprintToCompare,aListOfSplitedFingerprints[i]))
+        indice+=1
+    return(listOfDistances)
+
+def sumSubcategoriesDistances(firstFingerprint, secondFingerprint):
+    totalDistance=0
+    for i in range (len(firstFingerprint)):
+        totalDistance+=hamming_distance(firstFingerprint[i],secondFingerprint[i])
+    return(totalDistance)
+
 
 
 def hamming_distance(string1, string2):
