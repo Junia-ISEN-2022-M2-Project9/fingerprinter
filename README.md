@@ -31,3 +31,6 @@ Research were made on how hfinger process pcap, functions were used one by one t
     - Read needed keys
     - Format for usability
     - Process
+
+# Usage example
+> hfingerprinter.py -f files/onlyhttp.pcap -ot out -l test
