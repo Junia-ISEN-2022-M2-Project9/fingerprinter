@@ -86,8 +86,7 @@ try:
 except (PythonTooOld, TsharkNotFound, TsharkTooOld) as err:
     print(err)
     sys.exit(1)
-logger = logging.getLogger("hfinger")
-logger.info("Logger initiated")
+logger = logging.getLogger('hfinger')
 if args.logfile:
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.FileHandler(args.logfile, encoding="utf-8"))
@@ -95,6 +94,7 @@ elif args.verbose:
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler())
 if args.file:
+    logger.info("Logger initiated")
     try:
         is_pcap_file(args.file)
     except (FileNotFoundError, IsADirectoryError, PermissionError) as err:
