@@ -67,6 +67,15 @@ def get_length(bstr):
 
 
 def get_hdr_case(hdr):
+    """
+    If arg can be split with '-' return True if first letter is lower case, else False. If can't be split, the return True if first letter is upper case, False if not.
+    Args:
+        hdr:
+
+    Returns:
+
+    """
+    # Split each '-'
     if "-" in hdr:
         t = hdr.split("-")
         for i in t:
@@ -128,6 +137,14 @@ def get_method_version(request_split):
 
 # Checking header order - assuming that header field contains ":"
 def get_hdr_order(request_split):
+    """
+    Return a string composed of each arg split by ':', each value encoded with fnv1a_32 in lower case
+    Args:
+        request_split:
+
+    Returns:
+
+    """
     ret = []
     for reqline in request_split[1:]:
         hdr = reqline.split(":")[0]
@@ -160,6 +177,16 @@ def get_ua_value(hdr):
 
 
 def get_hdr_value(hdr, hdrname, hdr_value_table):
+    """
+    Return a set of string with hashed (fnv1a_32) values split with ':' from the keyword 'hdrname' from 'headerslow.json'. If key is empty, let it empty, if not found log 'unknown header value'. Process depend on header split key ',' if none, process each key value from arg key_value_table
+    Args:
+        hdr:
+        hdrname:
+        hdr_value_table:
+
+    Returns:
+
+    """
     val = hdr.split(":")[1]
     if val[0] == " ":
         val = val[1:]
