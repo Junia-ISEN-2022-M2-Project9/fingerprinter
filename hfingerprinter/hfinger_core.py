@@ -221,6 +221,14 @@ def get_hdr_value(hdr, hdrname, hdr_value_table):
 
 
 def get_content_type(hdr):
+    """
+    Parse key content-type from header and return value from known keys "content-type.json"
+    Args:
+        hdr:
+
+    Returns:
+
+    """
     val = hdr.split(":")[1]
     if val[0] == " ":
         val = val[1:]
@@ -282,6 +290,14 @@ def get_accept_language_value(hdr):
 
 
 def get_pop_hdr_val(request_split):
+    """
+    Return fingerprint associated by found keywords in header
+    Args:
+        request_split:
+
+    Returns:
+
+    """
     r = []
     for reqline in request_split[1:]:
         if ":" in reqline:
