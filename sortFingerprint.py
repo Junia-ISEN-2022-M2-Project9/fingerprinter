@@ -1,5 +1,5 @@
 import time
-
+import xlsxwriter
 
 def sortFile(fileLocation):
     listOfFingerprints = ["liste contenant toutes fingerprints differentes"]
@@ -16,9 +16,12 @@ def sortFile(fileLocation):
             if i == len(listOfFingerprints)-1 and not testMatch:
                 listOfFingerprints.append(line)
                 numberOfsameFingerprint.append(1)
+    listOfFingerprints.pop(0)
+    numberOfsameFingerprint.pop(0)
     for x in listOfFingerprints:
         listOfSplitedFingerprints.append(x.split('|'))
-    print(calculateDistanceBetweenFingerprints(listOfSplitedFingerprints))
+    listOfDistances=calculateDistanceBetweenFingerprints(listOfSplitedFingerprints)
+    writeInXlsx(listOfDistances,listOfFingerprints)
     file.close()
 
 def calculateDistanceBetweenFingerprints(aListOfSplitedFingerprints):
@@ -37,6 +40,32 @@ def sumSubcategoriesDistances(firstFingerprint, secondFingerprint):
     for i in range (len(firstFingerprint)):
         totalDistance+=hamming_distance(firstFingerprint[i],secondFingerprint[i])
     return(totalDistance)
+
+def writeInXlsx(aListofDistance,aListOfFingerprints):
+    workbook = xlsxwriter.Workbook('hello.xlsx')
+    worksheet = workbook.add_worksheet()
+    for k in range (len(aListOfFingerprints)):
+        if k<=24:
+            x=chr(66+k)+'1'
+        if k==25:
+            x='AA1'
+        if k>25:
+            x=chr(64+k//26)+chr(65+(k%26))+'1'
+        y='A'+str(k+2)
+        worksheet.write(x,str(aListOfFingerprints[k]))
+        worksheet.write(y,str(aListOfFingerprints[k]))
+    for z in range (len(aListofDistance)):
+        for y in range (len(aListofDistance[z])):
+            if y<=23-z:
+                x=chr(67+y+z)+str(2+z)
+            if y==24-z:
+                x='AA'+str(2+z)
+            if y>24-z:
+                x=chr(64+(y+1+z)//26)+chr(65+((y+1+z)%26))+str(2+z)
+            worksheet.write(x,str(aListofDistance[z][y]))
+    workbook.close()
+        
+
 
 
 
