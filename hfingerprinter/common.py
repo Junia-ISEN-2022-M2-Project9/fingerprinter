@@ -12,7 +12,8 @@ def to_txt(results, file_name):
 
     """
     logger = logging.getLogger('hfinger')
-    file = open(file_name, "w+")
+    name = file_name.split(".txt")
+    file = open(name[0], "w+")
     try:
         for result in results:
             logger.info("Fingerprint found : {}".format(result.get("fingerprint")))
