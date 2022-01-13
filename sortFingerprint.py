@@ -27,6 +27,10 @@ def sortFile(fileLocation):
                 numberOfsameFingerprint.append(1)
     listOfFingerprints.pop(0)
     numberOfsameFingerprint.pop(0)
+    print("This is the list of the figerprints found\n")
+    print(listOfFingerprints)
+    print("\nHow many of them in the file:\n")
+    print(numberOfsameFingerprint)
     for x in listOfFingerprints:
         listOfSplitedFingerprints.append(x.split('|'))
     listOfDistances=calculateDistanceBetweenFingerprints(listOfSplitedFingerprints)
@@ -103,4 +107,5 @@ def hamming_distance(string1, string2):
 if len(sys.argv)!=2:
     print("an argument with the list of the firgerprints must be given")
     exit(1)
+    
 main(sys.argv[1]) 
