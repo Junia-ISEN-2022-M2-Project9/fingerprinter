@@ -7,30 +7,62 @@ from hfinger.configs import AEVAL, CONNVAL, CONTENC, CACHECONT, TE, ACCPTCHAR, M
 import sys
 import logging
 
-
+# Fetch script logger
 logger = logging.getLogger("hfinger")
 
 
 def read_config(filename):
+    """
+    Reads configs.py dictionaries for reuse un script
+    Args:
+        filename:
+
+    Returns:
+
+    """
     with (Path(__file__).parent / "configs" / filename).open() as fin:
         return json.load(fin, object_pairs_hook=OrderedDict)
 
-
+# Store keywords from json files
 HDRL = read_config("headerslow.json")
 CONTENTTYPE = read_config("content-type.json")
 ACCPT = read_config("accept.json")
 
 
 def entropy(bstr):
+    """
+    Define state disorder number from body
+    Args:
+        bstr:
+
+    Returns:
+
+    """
     p, lns = Counter(bstr), float(len(bstr))
     return -sum(count / lns * math.log(count / lns, 2) for count in p.values())
 
 
 def get_entropy(bstr):
+    """
+    Return state disorder number from body
+    Args:
+        bstr:
+
+    Returns:
+
+    """
     return str(round(entropy(bstr), 1))
 
 
 def get_length(bstr):
+    """
+    Return length of body
+    Args:
+        bstr:
+
+    Returns:
+
+    """
     return str(round(math.log10(len(bstr)), 1))
 
 
@@ -48,6 +80,14 @@ def get_hdr_case(hdr):
 
 # Checking method and proto version
 def get_method_version(request_split):
+    """
+    Return HTTP & version, if not found assume it is 0.9. Else version 1 or 0
+    Args:
+        request_split:
+
+    Returns:
+
+    """
     r_ver = ""
     r_meth = ""
     # Checking if HTTP version is provided, if not assuming it is HTTP 0.9 per www.w3.org/Protocols/HTTP/Request.html
@@ -103,6 +143,14 @@ def get_hdr_order(request_split):
 
 
 def get_ua_value(hdr):
+    """
+    Return fingerprint of keyword user-agent
+    Args:
+        hdr:
+
+    Returns:
+
+    """
     val = hdr.split(":")[1]
     if val[0] == " ":
         val = val[1:]
@@ -192,6 +240,14 @@ def get_content_type(hdr):
 
 
 def get_accept_language_value(hdr):
+    """
+    Return fingerprint of keyword accept-language
+    Args:
+        hdr:
+
+    Returns:
+
+    """
     val = hdr.split(":")[1]
     name = HDRL["accept-language"]
     ret = name + ":" + format(fnv1a_32(val.encode()), "x")
