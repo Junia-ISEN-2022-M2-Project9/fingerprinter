@@ -1,5 +1,14 @@
-import time
 import xlsxwriter
+import sys
+
+def main(aFile):
+    return sortFile(aFile)
+
+
+####
+# Take a file as input and give an xlsx as output. This xlsx gives all the distances between the fingerprints. The current distance used is the hamming distance for
+# now. 
+####
 
 def sortFile(fileLocation):
     listOfFingerprints = ["liste contenant toutes fingerprints differentes"]
@@ -24,6 +33,10 @@ def sortFile(fileLocation):
     writeInXlsx(listOfDistances,listOfFingerprints)
     file.close()
 
+###
+# Calculate the distances between all the fingerprints given in a list, as a list of subcategories.
+###
+
 def calculateDistanceBetweenFingerprints(aListOfSplitedFingerprints):
     listOfDistances=[]
     indice=0
@@ -35,11 +48,19 @@ def calculateDistanceBetweenFingerprints(aListOfSplitedFingerprints):
         indice+=1
     return(listOfDistances)
 
+###   
+# calculate the complete distance between two fingerprints. 
+###
+
 def sumSubcategoriesDistances(firstFingerprint, secondFingerprint):
     totalDistance=0
     for i in range (len(firstFingerprint)):
         totalDistance+=hamming_distance(firstFingerprint[i],secondFingerprint[i])
     return(totalDistance)
+
+###
+# Write in an xlsx file the distances associated to a list of Fringerprints. 
+###
 
 def writeInXlsx(aListofDistance,aListOfFingerprints):
     workbook = xlsxwriter.Workbook('hello.xlsx')
@@ -68,7 +89,9 @@ def writeInXlsx(aListofDistance,aListOfFingerprints):
 
 
 
-
+###
+# determine the hamming_distance between two fingerprints. 
+###
 def hamming_distance(string1, string2):
     shortestLength = min(len(string1),len(string2))
     dist_counter = abs(len(string1)-len(string2))
@@ -77,5 +100,7 @@ def hamming_distance(string1, string2):
             dist_counter += 1
     return dist_counter
 
-
-sortFile("bigFileHttp.txt")
+if len(sys.argv)!=2:
+    print("an argument with the list of the firgerprints must be given")
+    exit(1)
+main(sys.argv[1]) 
