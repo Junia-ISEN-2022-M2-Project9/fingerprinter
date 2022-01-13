@@ -7,34 +7,75 @@ from hfinger.configs import AEVAL, CONNVAL, CONTENC, CACHECONT, TE, ACCPTCHAR, M
 import sys
 import logging
 
-
+# Fetch script logger
 logger = logging.getLogger("hfinger")
 
 
 def read_config(filename):
+    """
+    Reads configs.py dictionaries for reuse un script
+    Args:
+        filename:
+
+    Returns:
+
+    """
     with (Path(__file__).parent / "configs" / filename).open() as fin:
         return json.load(fin, object_pairs_hook=OrderedDict)
 
-
+# Store keywords from json files
 HDRL = read_config("headerslow.json")
 CONTENTTYPE = read_config("content-type.json")
 ACCPT = read_config("accept.json")
 
 
 def entropy(bstr):
+    """
+    Define state disorder number from body
+    Args:
+        bstr:
+
+    Returns:
+
+    """
     p, lns = Counter(bstr), float(len(bstr))
     return -sum(count / lns * math.log(count / lns, 2) for count in p.values())
 
 
 def get_entropy(bstr):
+    """
+    Return state disorder number from body
+    Args:
+        bstr:
+
+    Returns:
+
+    """
     return str(round(entropy(bstr), 1))
 
 
 def get_length(bstr):
+    """
+    Return length of body
+    Args:
+        bstr:
+
+    Returns:
+
+    """
     return str(round(math.log10(len(bstr)), 1))
 
 
 def get_hdr_case(hdr):
+    """
+    If arg can be split with '-' return True if first letter is lower case, else False. If can't be split, the return True if first letter is upper case, False if not.
+    Args:
+        hdr:
+
+    Returns:
+
+    """
+    # Split each '-'
     if "-" in hdr:
         t = hdr.split("-")
         for i in t:
@@ -48,6 +89,14 @@ def get_hdr_case(hdr):
 
 # Checking method and proto version
 def get_method_version(request_split):
+    """
+    Return HTTP & version, if not found assume it is 0.9. Else version 1 or 0
+    Args:
+        request_split:
+
+    Returns:
+
+    """
     r_ver = ""
     r_meth = ""
     # Checking if HTTP version is provided, if not assuming it is HTTP 0.9 per www.w3.org/Protocols/HTTP/Request.html
@@ -88,6 +137,14 @@ def get_method_version(request_split):
 
 # Checking header order - assuming that header field contains ":"
 def get_hdr_order(request_split):
+    """
+    Return a string composed of each arg split by ':', each value encoded with fnv1a_32 in lower case
+    Args:
+        request_split:
+
+    Returns:
+
+    """
     ret = []
     for reqline in request_split[1:]:
         hdr = reqline.split(":")[0]
@@ -103,6 +160,14 @@ def get_hdr_order(request_split):
 
 
 def get_ua_value(hdr):
+    """
+    Return fingerprint of keyword user-agent
+    Args:
+        hdr:
+
+    Returns:
+
+    """
     val = hdr.split(":")[1]
     if val[0] == " ":
         val = val[1:]
@@ -112,6 +177,16 @@ def get_ua_value(hdr):
 
 
 def get_hdr_value(hdr, hdrname, hdr_value_table):
+    """
+    Return a set of string with hashed (fnv1a_32) values split with ':' from the keyword 'hdrname' from 'headerslow.json'. If key is empty, let it empty, if not found log 'unknown header value'. Process depend on header split key ',' if none, process each key value from arg key_value_table
+    Args:
+        hdr:
+        hdrname:
+        hdr_value_table:
+
+    Returns:
+
+    """
     val = hdr.split(":")[1]
     if val[0] == " ":
         val = val[1:]
@@ -146,6 +221,14 @@ def get_hdr_value(hdr, hdrname, hdr_value_table):
 
 
 def get_content_type(hdr):
+    """
+    Parse key content-type from header and return value from known keys "content-type.json"
+    Args:
+        hdr:
+
+    Returns:
+
+    """
     val = hdr.split(":")[1]
     if val[0] == " ":
         val = val[1:]
@@ -192,6 +275,14 @@ def get_content_type(hdr):
 
 
 def get_accept_language_value(hdr):
+    """
+    Return fingerprint of keyword accept-language
+    Args:
+        hdr:
+
+    Returns:
+
+    """
     val = hdr.split(":")[1]
     name = HDRL["accept-language"]
     ret = name + ":" + format(fnv1a_32(val.encode()), "x")
@@ -199,6 +290,14 @@ def get_accept_language_value(hdr):
 
 
 def get_pop_hdr_val(request_split):
+    """
+    Return fingerprint associated by found keywords in header
+    Args:
+        request_split:
+
+    Returns:
+
+    """
     r = []
     for reqline in request_split[1:]:
         if ":" in reqline:
