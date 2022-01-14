@@ -54,7 +54,7 @@ def run_tshark(pcap_path, rep_mode, texec, tver):
                     "-T",
                     "json",
                     "-x",
-                    "-Yhttp.request and tcp and not icmp",
+                    "-Y http.request and tcp and not icmp and not ipv6 and frame.encap_type eq Ethernet",
                     "-r",
                     pcap_path,
                 ],
