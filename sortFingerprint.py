@@ -1,5 +1,7 @@
-import xlsxwriter
+#import xlsxwriter
+from difflib import SequenceMatcher
 import sys
+
 
 def main(aFile):
     return sortFile(aFile)
@@ -11,9 +13,26 @@ def main(aFile):
 ####
 
 def sortFile(fileLocation):
+    listOfFingerprints=[]
+    file = open(fileLocation, "r")
+    for line in file:
+        listOfFingerprints.append(line.replace('\n','')) #retire le retour a la ligne a la fin des fingerprints
+    listOfFingerprints=list(set(listOfFingerprints)) # retire les doublons
+
+    #print(listOfFingerprints)
+
+    listDistances=[] # list of list (matrix). Chaque liste contient l'ensemble des distances par rapport a une empreinte. 
+    for fingerprint in listOfFingerprints:
+        listOfDist=[]
+        for fingerprint2 in listOfFingerprints: 
+            listOfDist.append(distance(fingerprint,fingerprint2))
+        listDistances.append(listOfDist)
+    print(listDistances)
+
+    """
     listOfFingerprints = ["liste contenant toutes fingerprints differentes"]
     listOfSplitedFingerprints=[]
-    numberOfsameFingerprint = ["nombre de fringerprint semblable a celle du même indice dans liste precedente"]
+    numberOfsameFingerprint = ["nombre de fringerprint semblable a celle du meme indice dans liste precedente"]
     file = open(fileLocation, "r")
     for line in file:
         testMatch = False
@@ -34,9 +53,13 @@ def sortFile(fileLocation):
     for x in listOfFingerprints:
         listOfSplitedFingerprints.append(x.split('|'))
     listOfDistances=calculateDistanceBetweenFingerprints(listOfSplitedFingerprints)
-    writeInXlsx(listOfDistances,listOfFingerprints)
+    print(max(listOfDistances))
     file.close()
+"""
 
+def distance(f1,f2):
+    return(1-SequenceMatcher(None,f1,f2).ratio())
+"""
 ###
 # Calculate the distances between all the fingerprints given in a list, as a list of subcategories.
 ###
@@ -51,7 +74,8 @@ def calculateDistanceBetweenFingerprints(aListOfSplitedFingerprints):
             listOfDistances[indice].append(sumSubcategoriesDistances(fingerprintToCompare,aListOfSplitedFingerprints[i]))
         indice+=1
     return(listOfDistances)
-
+"""
+"""
 ###   
 # calculate the complete distance between two fingerprints. 
 ###
@@ -61,11 +85,11 @@ def sumSubcategoriesDistances(firstFingerprint, secondFingerprint):
     for i in range (len(firstFingerprint)):
         totalDistance+=hamming_distance(firstFingerprint[i],secondFingerprint[i])
     return(totalDistance)
-
+"""
 ###
 # Write in an xlsx file the distances associated to a list of Fringerprints. 
 ###
-
+"""
 def writeInXlsx(aListofDistance,aListOfFingerprints):
     workbook = xlsxwriter.Workbook('hello.xlsx')
     worksheet = workbook.add_worksheet()
@@ -89,13 +113,15 @@ def writeInXlsx(aListofDistance,aListOfFingerprints):
                 x=chr(64+(y+1+z)//26)+chr(65+((y+1+z)%26))+str(2+z)
             worksheet.write(x,str(aListofDistance[z][y]))
     workbook.close()
-        
+"""
 
 
-
+"""
 ###
 # determine the hamming_distance between two fingerprints. 
 ###
+
+# Distance de levenstein 
 def hamming_distance(string1, string2):
     shortestLength = min(len(string1),len(string2))
     dist_counter = abs(len(string1)-len(string2))
@@ -107,5 +133,6 @@ def hamming_distance(string1, string2):
 if len(sys.argv)!=2:
     print("an argument with the list of the firgerprints must be given")
     exit(1)
-    
+"""
 main(sys.argv[1]) 
+
