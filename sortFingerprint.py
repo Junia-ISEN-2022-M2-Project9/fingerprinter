@@ -9,9 +9,9 @@ from sklearn.datasets import load_iris
 from sklearn.cluster import AgglomerativeClustering
 
 def main(aFile):
-    return sortFile(aFile)
-
-
+    listDistances= sortFile(aFile)
+    return(listDistances)
+   
 ####
 # Take a file as input and give an xlsx as output. This xlsx gives all the distances between the fingerprints. The current distance used is the hamming distance for
 # now. 
@@ -32,7 +32,7 @@ def sortFile(fileLocation):
         for fingerprint2 in listOfFingerprints: 
             listOfDist.append(distance(fingerprint,fingerprint2))
         listDistances.append(listOfDist)
-    print(listDistances)
+    return(listDistances)
 
 def distance(f1,f2):
     return(1-SequenceMatcher(None,f1,f2).ratio())
@@ -64,8 +64,8 @@ def plot_dendrogram(model, **kwargs):
     dendrogram(linkage_matrix, **kwargs)
 
 
-iris = load_iris()
-X = iris.data
+X = main(sys.argv[1])
+print(X)
 
 # setting distance_threshold=0 ensures we compute the full tree.
 model = AgglomerativeClustering(distance_threshold=0, n_clusters=None)
