@@ -4,7 +4,6 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import dendrogram
-from sklearn.datasets import load_iris
 from sklearn.cluster import AgglomerativeClustering
 from difflib import SequenceMatcher
 
@@ -54,7 +53,7 @@ def main():
     for fingerprint in listOfFingerprints:
         listOfDist=[]
         for fingerprint2 in listOfFingerprints:
-            listOfDist.append(distance(fingerprint,fingerprint2))
+            listOfDist.append(distance(fingerprint,fingerprint2))                    
         listDistances.append(listOfDist)
 
 
@@ -66,9 +65,10 @@ def main():
     # Affichage
     plt.title("Dendogramme de Regroupement Hierarchique")
     plot_dendrogram(model, truncate_mode="level", p=3) # plot the top three levels of the dendrogram
-    plt.show()
     plt.xlabel("Nombre de points dans un noeud (ou index de point s'il n'y a pas de parenthèse)")
-
+    plt.ylabel("Distance entre les clusters")
+    plt.show()
+    
 
 if __name__ ==  '__main__':
     main()
