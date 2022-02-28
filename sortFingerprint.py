@@ -36,6 +36,7 @@ def plot_dendrogram(model, **kwargs):
                 # Plot the corresponding dendrogram
                 dendrogram(linkage_matrix, **kwargs)
 
+    
 
 #--------------------------MAIN--------------------------#
 
@@ -46,6 +47,7 @@ def main():
         listOfFingerprints = [line.replace('\n', '') for line in file]
         #listOfFingerprints.append(line.replace('\n','')) #retire le retour a la ligne a la fin des fingerprints
         listOfFingerprints=list(set(listOfFingerprints)) # retire les doublons
+        print(len(listOfFingerprints))
 
 
     # Création de la matrice de distances
@@ -64,7 +66,7 @@ def main():
 
     # Affichage
     plt.title("Dendogramme de Regroupement Hierarchique")
-    plot_dendrogram(model, truncate_mode="level", p=3) # plot the top three levels of the dendrogram
+    plot_dendrogram(model, truncate_mode="level", p=10) # plot the top three levels of the dendrogram
     plt.xlabel("Nombre de points dans un noeud (ou index de point s'il n'y a pas de parenthèse)")
     plt.ylabel("Distance entre les clusters")
     plt.show()
