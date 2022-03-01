@@ -67,7 +67,7 @@ def main():
 
 
     # Création du modèle
-    model = AgglomerativeClustering(distance_threshold=None, n_clusters=2) # n_cluster= number of cluster to find, if not none distance must be none. 
+    model = AgglomerativeClustering(distance_threshold=None, n_clusters=3) # n_cluster= number of cluster to find, if not none distance must be none. 
     model = model.fit(listDistances) 
 
 
