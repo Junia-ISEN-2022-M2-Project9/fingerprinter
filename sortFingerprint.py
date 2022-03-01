@@ -42,12 +42,19 @@ def plot_dendrogram(model, **kwargs):
 
 def main():
     # Formatage des empreintes
-    filePath = sys.argv[1]
-    with open(filePath, "r") as file:
-        listOfFingerprints = [line.replace('\n', '') for line in file]
-        #listOfFingerprints.append(line.replace('\n','')) #retire le retour a la ligne a la fin des fingerprints
-        listOfFingerprints=list(set(listOfFingerprints)) # retire les doublons
-        print(len(listOfFingerprints))
+    listOfFingerprints=[]
+    listWithAllTaggedFingerprints=[]
+    for z in range(len(sys.argv)-1):
+        filePath = sys.argv[z+1]
+        with open(filePath, "r") as file:
+            listOfFingerprintsInFile = [line.replace('\n', '') for line in file]
+            #listOfFingerprints.append(line.replace('\n','')) #retire le retour a la ligne a la fin des fingerprints
+            listOfFingerprintsInFile=list(set(listOfFingerprintsInFile)) # retire les doublons
+            listOfFingerprintsInFile2=[]
+            for y in range(len(listOfFingerprintsInFile)):
+                listOfFingerprintsInFile2.append([listOfFingerprintsInFile[y],filePath])
+        listOfFingerprints.extend(listOfFingerprintsInFile)
+        listWithAllTaggedFingerprints.extend(listOfFingerprintsInFile2)
 
 
     # Création de la matrice de distances
@@ -60,16 +67,25 @@ def main():
 
 
     # Création du modèle
-    model = AgglomerativeClustering(distance_threshold=0, n_clusters=None) # setting distance_threshold=0 ensures we compute the full tree
-    model = model.fit(listDistances)
+    model = AgglomerativeClustering(distance_threshold=None, n_clusters=2) # n_cluster= number of cluster to find, if not none distance must be none. 
+    model = model.fit(listDistances) 
 
 
     # Affichage
     plt.title("Dendogramme de Regroupement Hierarchique")
-    plot_dendrogram(model, truncate_mode="level", p=10) # plot the top three levels of the dendrogram
+    #plot_dendrogram(model, truncate_mode="level", p=10) # plot the top ten levels of the dendrogram
     plt.xlabel("Nombre de points dans un noeud (ou index de point s'il n'y a pas de parenthèse)")
     plt.ylabel("Distance entre les clusters")
-    plt.show()
+    #plt.show()
+    #print(model.n_clusters_)
+    #print(model.labels_)
+    for k in range(model.n_clusters_):
+        print("\ncluster number "+str(k))
+        for p in range(len(listOfFingerprints)):
+            if model.labels_[p]==k:
+                print(listOfFingerprints[p]+' '+listWithAllTaggedFingerprints[p][1])
+
+
     
 
 if __name__ ==  '__main__':
