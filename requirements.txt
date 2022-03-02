@@ -1,0 +1,9 @@
+hfinger~=0.2.1
+python-magic~=0.4.24
+fnvhash~=0.1.0
+hfingerprinter~=0.1
+numpy~=1.22.1
+matplotlib~=3.5.1
+scipy~=1.7.3
+sklearn~=0.0
+scikit-learn~=1.0.2
