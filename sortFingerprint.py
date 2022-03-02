@@ -1,5 +1,5 @@
 #!/bin/python
-
+import re
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
@@ -67,7 +67,7 @@ def main():
 
 
     # Création du modèle
-    model = AgglomerativeClustering(distance_threshold=None, n_clusters=3) # n_cluster= number of cluster to find, if not none distance must be none. 
+    model = AgglomerativeClustering(distance_threshold=None, n_clusters=2) # n_cluster= number of cluster to find, if not none distance must be none.
     model = model.fit(listDistances) 
 
 
@@ -79,11 +79,31 @@ def main():
     #plt.show()
     #print(model.n_clusters_)
     #print(model.labels_)
+
     for k in range(model.n_clusters_):
+        # Will be reset for each cluster needed
+        stats = {} # dictionary containing stats for a cluster
+        results = []  # contains wanted fingerprints followed by its txt source
         print("\ncluster number "+str(k))
         for p in range(len(listOfFingerprints)):
             if model.labels_[p]==k:
-                print(listOfFingerprints[p]+' '+listWithAllTaggedFingerprints[p][1])
+                results.append(listOfFingerprints[p] + ' ' + listWithAllTaggedFingerprints[p][1])
+        # show some stats
+        # fetch name at each end of fingerprint and count in a dictionary
+        for finger in results:
+            # split with space presence
+            text_file_name = re.split("\s", finger)
+            # dict exists
+            if text_file_name[1] in stats:
+                stats[text_file_name[1]] += 1
+            #dict does not exist
+            else:
+                stats[text_file_name[1]] = 1
+        # do maths with stats dictionary
+        print(stats)
+        for res in results:
+            print(res)
+
 
 
     
