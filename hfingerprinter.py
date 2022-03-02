@@ -105,6 +105,9 @@ if args.file:
         sys.exit(1)
     else:
         results = run_tshark(args.file, args.mode, tshark_exec, tshark_ver)
+        if not results:
+            logger.warning("No HTTP requests can be used")
+            print("No HTTP requests can be used")
         if args.output_json_path is not None:
             write_results_to_file(args.file, args.output_json_path, results)
         if args.output_txt_path is not None:
