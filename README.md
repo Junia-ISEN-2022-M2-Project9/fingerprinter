@@ -34,3 +34,5 @@ Research were made on how hfinger process pcap, functions were used one by one t
 
 # Usage example
 > hfingerprinter.py -f files/onlyhttp.pcap -ot out -l test
+
+> python3 sortFingerprint.py /files/GlobeImposter /files/wannaCry /files/Phobos
