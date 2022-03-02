@@ -110,3 +110,48 @@ def main():
 
 if __name__ ==  '__main__':
     main()
+
+
+# Formatage des empreintes
+listOfFingerprints=[]
+listWithAllTaggedFingerprints=[]
+for z in range(len(sys.argv)-1):
+    filePath = sys.argv[z+1]
+    with open(filePath, "r") as file:
+        listOfFingerprintsInFile = [line.replace('\n', '') for line in file]
+        #listOfFingerprints.append(line.replace('\n','')) #retire le retour a la ligne a la fin des fingerprints
+        listOfFingerprintsInFile=list(set(listOfFingerprintsInFile)) # retire les doublons
+        listOfFingerprintsInFile2=[]
+        for y in range(len(listOfFingerprintsInFile)):
+            listOfFingerprintsInFile2.append([listOfFingerprintsInFile[y],filePath])
+    listOfFingerprints.extend(listOfFingerprintsInFile)
+    listWithAllTaggedFingerprints.extend(listOfFingerprintsInFile2)
+
+
+# Création de la matrice de distances
+listDistances=[] # Chaque liste contient l'ensemble des distances par rapport a une empreinte.
+for fingerprint in listOfFingerprints:
+    listOfDist=[]
+    for fingerprint2 in listOfFingerprints:
+        listOfDist.append(distance(fingerprint,fingerprint2))                    
+    listDistances.append(listOfDist)
+
+
+# Création du modèle
+model = AgglomerativeClustering(distance_threshold=None, n_clusters=3) # n_cluster= number of cluster to find, if not none distance must be none. 
+model = model.fit(listDistances) 
+
+
+# Affichage
+plt.title("Dendogramme de Regroupement Hierarchique")
+#plot_dendrogram(model, truncate_mode="level", p=10) # plot the top ten levels of the dendrogram
+plt.xlabel("Nombre de points dans un noeud (ou index de point s'il n'y a pas de parenthèse)")
+plt.ylabel("Distance entre les clusters")
+#plt.show()
+#print(model.n_clusters_)
+#print(model.labels_)
+for k in range(model.n_clusters_):
+    print("\ncluster number "+str(k))
+    for p in range(len(listOfFingerprints)):
+        if model.labels_[p]==k:
+            print(listOfFingerprints[p]+' '+listWithAllTaggedFingerprints[p][1])
