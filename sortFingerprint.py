@@ -6,13 +6,33 @@ import matplotlib.pyplot as plt
 from scipy.cluster.hierarchy import dendrogram
 from sklearn.cluster import AgglomerativeClustering
 from difflib import SequenceMatcher
+import jellyfish
 
 #-----------------------FONCTIONS------------------------#
 
 
-# Fonction de calcul de distance
+# Fonction de calcul de distance avec sequenceMatcher
+
 def distance(f1,f2):
-    return(1-SequenceMatcher(None,f1,f2).ratio())
+    return(1-SequenceMatcher(None,f1,f2).ratio()) # isjunk=None (no element ignored), .ratio give float between [0,1]
+
+# Fonction de calcul de distance avec jellyfish
+#Uncomment to use levenstein distance
+"""
+def distance(f1,f2):
+    return(jellyfish.levenshtein_distance(f1,f2))
+"""
+#Uncomment to use jaro distance
+"""
+def distance(f1,f2):
+    return(jellyfish.jaro_distance(f1,f2))
+"""
+#Uncomment to use damerau levenstein distance
+"""
+def distance(f1,f2):
+    return(jellyfish.damerau_levenshtein_distance(f1,f2))
+"""
+
 
 # Fonction d'affichage du dendogramme
 def plot_dendrogram(model, **kwargs):
