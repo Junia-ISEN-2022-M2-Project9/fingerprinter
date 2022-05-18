@@ -12,7 +12,7 @@
     {
       "name": "cluster2",
       "fingerprintRef": "0|||||GE|1|ca-co,us-ag,re,ho,ac,ac-en,co|ca-co:nc/us-ag:c48580a8/ac:as-as/ac-en:gz,de/co:cl|||",
-      "distanceRef": 0.08510638297872342,
+      "distanceRef": 0.510638297872342,
       "distances": {
         "cluster3": 14.51,
         "cluster4": 7.47
@@ -21,10 +21,19 @@
     {
       "name": "cluster3",
       "fingerprintRef": "0|||||GE|1|ca-co,us-ag,re,ho,ac,ac-en,co|ca-co:nc/us-ag:c48580a8/ac:as-as/ac-en:gz,de/co:cl|||",
-      "distanceRef": 0.08510638297872342,
+      "distanceRef": 0.8510638297872342,
       "distances": {
         "cluster4": 10.96,
         "cluster5": 15.51
+      }
+    },
+    {
+      "name": "cluster4",
+      "fingerprintRef": "0|||||GE|1|ca-co,us-ag,re,ho,ac,ac-en,co|ca-co:nc/us-ag:c48580a8/ac:as-as/ac-en:gz,de/co:cl|||",
+      "distanceRef": 0.510638297872342,
+      "distances": {
+        "cluster5": 14.51,
+        "cluster6": 7.47
       }
     }
   ]

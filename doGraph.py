@@ -74,10 +74,10 @@ def build_coordinates(coord_object):
             x_points.append(cx)
             y_points.append(cy)
 
-            #print("cx: ", cx)
-            #print("cy: ", cy)
+            # print("cx: ", cx)
+            # print("cy: ", cy)
 
-    return np.fromiter(x_points, dtype=int)  , np.fromiter(y_points, dtype=int)
+    return np.fromiter(x_points, dtype=int), np.fromiter(y_points, dtype=int)
 
 
 def coordify(file):
@@ -99,5 +99,13 @@ if args.file:
     print("x_points ", x_points)
     print("y_points ", y_points)
     plt.axis([-5, 15, -5, 15])
-    plt.plot(x_points, y_points)
+    plt.axis("equal")
+
+    count = 0
+    for name, circle in json_radius.items():
+        c = plt.Circle((x_points[count], y_points[count]), radius=circle, edgecolor='r', alpha=0.8)
+        plt.gca().add_artist(c)
+        plt.text(x_points[count], y_points[count], name, horizontalalignment='center', verticalalignment='center')
+        count += 1
+    #plt.plot(x_points, y_points)
     plt.show()
