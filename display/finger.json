@@ -1,0 +1,52 @@
+{
+  "clusters": [
+    {
+      "name": "cluster1",
+      "idFingerprintRef": 235,
+      "fingerprintRef": "0|||||GE|0|||||",
+      "distanceRef": 0.1333333333333333,
+      "distances": {
+        "A": 0,
+        "B": 0.7592592592592593,
+        "C": 0.8791208791208791,
+        "D": 0.125
+      }
+    },
+    {
+      "name": "cluster2",
+      "idFingerprintRef": 22,
+      "fingerprintRef": "0|||||GE|1|ca-co,us-ag,re,ho,ac,ac-en,co|ca-co:nc/us-ag:1be9350/ac:as-as/ac-en:gz,de/co:cl|||",
+      "distanceRef": 0.08510638297872342,
+      "distances": {
+        "A": 0.7592592592592593,
+        "B": 0,
+        "C": 0.43846153846153846,
+        "D": 0.8909090909090909
+      }
+    },
+    {
+      "name": "cluster3",
+      "idFingerprintRef": 0,
+      "fingerprintRef": "0|||||PO|1|ho,co-le,ca-co,u-i-r,or,co-ty,us-ag,ac,re,ac-en,ac-la,co|ca-co:916a0a82/co-ty:ap-x-w-f-u/us-ag:46434236/ac:f159e9d0/ac-en:gz,de/ac-la:df003f30/co:cl|A|5|2.1",
+      "distanceRef": 0.0239520958083832,
+      "distances": {
+        "A": 0.8791208791208791,
+        "B": 0.43846153846153846,
+        "C": 0,
+        "D": 0.9347826086956522
+      }
+    },
+    {
+      "name": "cluster4",
+      "idFingerprintRef": 237,
+      "fingerprintRef": "2|2|1|||GE|0|||||",
+      "distanceRef": 0,
+      "distances": {
+        "A": 0.125,
+        "B": 0.8909090909090909,
+        "C": 0.9347826086956522,
+        "D": 0
+      }
+    }
+  ]
+}

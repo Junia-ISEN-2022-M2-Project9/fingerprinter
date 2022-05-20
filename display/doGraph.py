@@ -27,11 +27,12 @@ def x_coord(ac, bc, ab):
 def y_coord(ac, c_x):
     tmp = (math.pow(ac, 2) - math.pow(c_x, 2))
     if tmp > 0:
-        return math.sqrt(math.pow(ac, 2) - math.pow(c_x, 2))
+        return math.sqrt(tmp)
     if tmp == 0:
         return 0
     else:
-        return "Nothing"
+        tmp = -1*tmp
+        return math.sqrt(tmp)*-1
 
 
 def dist(ax, bx, ay, by):
@@ -50,32 +51,33 @@ def build_coordinates(coord_object):
     bc = 0
 
     # init base segment
-    x_points.append(coord_object["cluster1"].get("cluster2"))
+    x_points.append(float(coord_object["cluster1"].get("B"))*10)
 
+    # take values
+    bx = x_points[len(x_points) - 1]
+    ax = x_points[len(x_points) - 2]
+    by = y_points[len(y_points) - 1]
+    ay = y_points[len(y_points) - 2]
+    ab = dist(ax, bx, ay, by)
+
+    ignore_first = False
+    ignore_second = False
     for name, entry in coord_object.items():
-        # take values
-        bx = x_points[len(x_points) - 1]
-        ax = x_points[len(x_points) - 2]
-        by = y_points[len(y_points) - 1]
-        ay = y_points[len(y_points) - 2]
-
-        ab = dist(ax, bx, ay, by)
-
-        # start
-        if name == "cluster1":
-            ac = list(entry.values())[1]
-
         # ignore first
-        if name != "cluster1":
-            bc = list(entry.values())[0]
+        if ignore_first and ignore_second:
+            ac = entry.get("A") * 10
+            bc = entry.get("B") * 10
             cx = x_coord(ac, bc, ab)
             cy = y_coord(ac, x_coord(ac, bc, ab))
-            ac = list(entry.values())[1]
             x_points.append(cx)
             y_points.append(cy)
 
             # print("cx: ", cx)
             # print("cy: ", cy)
+        else:
+            if ignore_first:
+                ignore_second = True
+            ignore_first = True
 
     return np.fromiter(x_points, dtype=int), np.fromiter(y_points, dtype=int)
 
@@ -103,7 +105,7 @@ if args.file:
 
     count = 0
     for name, circle in json_radius.items():
-        c = plt.Circle((x_points[count], y_points[count]), radius=circle, edgecolor='r', alpha=0.8)
+        c = plt.Circle((x_points[count], y_points[count]), radius=circle*10, edgecolor='r', alpha=0.8)
         plt.gca().add_artist(c)
         plt.text(x_points[count], y_points[count], name, horizontalalignment='center', verticalalignment='center')
         count += 1
