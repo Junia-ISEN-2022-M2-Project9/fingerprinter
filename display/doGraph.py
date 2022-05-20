@@ -1,6 +1,7 @@
 import argparse
 import json
 import math
+import random
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -39,7 +40,7 @@ def dist(ax, bx, ay, by):
     return math.sqrt(math.pow((bx - ax), 2) + math.pow((by - ay), 2))
 
 
-def build_coordinates(coord_object):
+def build_coordinates(coord_object, names):
     # cluster1 {0,0}
     # cluster2 {?,0}
     x_points = [0]
@@ -51,7 +52,7 @@ def build_coordinates(coord_object):
     bc = 0
 
     # init base segment
-    x_points.append(float(coord_object["cluster1"].get("B"))*10)
+    x_points.append(float(coord_object[list(coord_object.keys())[0]].get("B"))*10)
 
     # take values
     bx = x_points[len(x_points) - 1]
@@ -62,7 +63,7 @@ def build_coordinates(coord_object):
 
     ignore_first = False
     ignore_second = False
-    for name, entry in coord_object.items():
+    for entry in coord_object.values():
         # ignore first
         if ignore_first and ignore_second:
             ac = entry.get("A") * 10
@@ -85,29 +86,37 @@ def build_coordinates(coord_object):
 def coordify(file):
     coords = {}
     radius = {}
+    name = {}
 
     f = open(file)
     data = json.load(f)
     for entry in data['clusters']:
-        coords[entry["name"]] = entry["distances"]
-        radius[entry["name"]] = entry["distanceRef"]
+        coords[entry["idFingerprintRef"]] = entry["distances"]
+        radius[entry["idFingerprintRef"]] = entry["distanceRef"]
+        name[entry["idFingerprintRef"]] = entry["name"]
     f.close()
-    return radius, coords
+    return radius, coords, name
 
 
 if args.file:
-    json_radius, json_coords = coordify(args.file)
-    x_points, y_points = build_coordinates(json_coords)
+    json_radius, json_coords, json_name = coordify(args.file)
+    x_points, y_points = build_coordinates(json_coords, json_name)
     print("x_points ", x_points)
     print("y_points ", y_points)
     plt.axis([-5, 15, -5, 15])
     plt.axis("equal")
 
     count = 0
-    for name, circle in json_radius.items():
-        c = plt.Circle((x_points[count], y_points[count]), radius=circle*10, edgecolor='r', alpha=0.8)
+    previous_name = None
+    color = None
+    for circle, name in zip(json_radius.values(), json_name.values()):
+        if name != previous_name:
+            color = "#"+''.join([random.choice('ABCDEF0123456789') for i in range(6)])
+            previous_name = name
+        c = plt.Circle((x_points[count], y_points[count]), radius=0.1, color=color, alpha=0.8, label=name)
         plt.gca().add_artist(c)
-        plt.text(x_points[count], y_points[count], name, horizontalalignment='center', verticalalignment='center')
+        #plt.text(x_points[count], y_points[count], name, horizontalalignment='center', verticalalignment='center')
+        plt.legend()
         count += 1
     #plt.plot(x_points, y_points)
     plt.show()
