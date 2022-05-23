@@ -1,0 +1,78 @@
+{
+  "clusters": [
+    {
+      "name": "cluster0",
+      "idFingerprintRef": 0,
+      "fingerprintRef": "0|||||PO|1|ho,co-le,ca-co,u-i-r,or,co-ty,us-ag,ac,re,ac-en,ac-la,co|ca-co:916a0a82/co-ty:ap-x-w-f-u/us-ag:46434236/ac:f159e9d0/ac-en:gz,de/ac-la:df003f30/co:cl|A|5|2.1",
+      "distanceRef": 0.017964071856287456,
+      "distancesReferences": {
+        "A": 0,
+        "B": 0.6289592760180995,
+        "C": 0.6199095022624435
+      },
+      "listePoints": {
+        "point0": {
+          "A": 0,
+          "B": 0.6289592760180995,
+          "C": 0.6199095022624435
+        },
+        "point1": {
+          "A": 0.005988023952095856,
+          "B": 0.6289592760180995,
+          "C": 0.6199095022624435
+        },
+        "point2": {
+          "A": 0.005988023952095856,
+          "B": 0.6289592760180995,
+          "C": 0.6199095022624435
+        }
+      }
+    },
+    {
+      "name": "cluster1",
+      "idFingerprintRef": 10,
+      "fingerprintRef": "1|1|1|||GE|1|ho,us-ag,ac-en|us-ag:1e83efc8/ac-en:gz|||",
+      "distanceRef": 0.01851851851851849,
+      "distancesReferences": {
+        "A": 0.6289592760180995,
+        "B": 0,
+        "C": 0.05555555555555558
+      },
+      "listePoints": {
+        "point0": {
+          "A": 0.6289592760180995,
+          "B": 0,
+          "C": 0.05555555555555558
+        },
+        "point1": {
+          "A": 0.6199095022624435,
+          "B": 0.01851851851851849,
+          "C": 0.03703703703703709
+        }
+      }
+    },
+    {
+      "name": "cluster2",
+      "idFingerprintRef": 11,
+      "fingerprintRef": "0|0|0|||GE|1|ho,us-ag,ac-en|us-ag:1e83efc8/ac-en:gz|||",
+      "distanceRef": 0.01851851851851849,
+      "distancesReferences": {
+        "A": 0.6199095022624435,
+        "B": 0.05555555555555558,
+        "C": 0
+      },
+      "listePoints": {
+        "point0": {
+          "A": 0.6199095022624435,
+          "B": 0.05555555555555558,
+          "C": 0
+        },
+        "point1": {
+          "A": 0.6199095022624435,
+          "B": 0.03703703703703709,
+          "C": 0.01851851851851849
+        }
+      }
+    }
+  ]
+}
