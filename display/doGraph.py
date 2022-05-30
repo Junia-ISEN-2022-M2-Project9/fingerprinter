@@ -3,6 +3,7 @@ import json
 import math
 import random
 
+import imageio as imageio
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -169,6 +170,8 @@ def open_points(ab, points):
     try:
         f = open(points)
         data = json.load(f)
+        filenames = []
+        count = 0
 
         for entry in data:
             ac = entry[0] * 10
@@ -178,6 +181,20 @@ def open_points(ab, points):
 
             # show
             plt.plot(cx, cy, color='black', marker="+")
+            # save
+            filename = f'{count}.png'
+            filenames.append(filename)
+
+            # save frame
+            plt.savefig(filename)
+
+            count += 1
+
+        # build gif
+        with imageio.get_writer('mygif.gif', mode='I') as writer:
+            for filename in filenames:
+                image = imageio.imread(filename)
+                writer.append_data(image)
         f.close()
     finally:
         f.close()
