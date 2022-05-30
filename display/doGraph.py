@@ -13,9 +13,13 @@ my_parser = argparse.ArgumentParser(
     formatter_class=argparse.RawTextHelpFormatter,
 )
 
-my_group = my_parser.add_mutually_exclusive_group(required=True)
+my_group = my_parser
 my_group.add_argument(
-    "-f", "--file", action="store", type=str, help="Read a single json file"
+    "-f", "--file", action="store", type=str, help="Read a json file"
+)
+
+my_group.add_argument(
+    "-p", "--points", action="store", type=str, help="Read a single txt file"
 )
 
 args = my_parser.parse_args()
@@ -118,8 +122,7 @@ def process_entry(entry, color, ab):
     cy = y_coord(ac, x_coord(ac, bc, ab))
 
     # show first point with legend
-    c = plt.Circle((cx, cy), radius=0.1, color=color, alpha=0.8, label=name)
-    plt.gca().add_artist(c)
+    plt.plot(cx, cy, color=color, label=name, marker='o')
 
     # Side points
     for entry_point in points.values():
@@ -129,8 +132,7 @@ def process_entry(entry, color, ab):
         cy = y_coord(ac, x_coord(ac, bc, ab))
 
         # show
-        c = plt.Circle((cx, cy), radius=0.1, color=color, alpha=0.8)
-        plt.gca().add_artist(c)
+        plt.plot(cx, cy, color=color, marker='o')
     print(name, distances, points)
 
 
@@ -156,13 +158,35 @@ def open_json(file):
             # Do math
             process_entry(entry, color, ab)
         f.close()
+        return ab
+    finally:
+        f.close()
+        return ab
+
+
+# Given json in parameter
+def open_points(ab, points):
+    try:
+        f = open(points)
+        data = json.load(f)
+
+        for entry in data:
+            ac = entry[0] * 10
+            bc = entry[1] * 10
+            cx = x_coord(ac, bc, ab)
+            cy = y_coord(ac, x_coord(ac, bc, ab))
+
+            # show
+            plt.plot(cx, cy, color='black', marker="+")
+        f.close()
     finally:
         f.close()
 
-# Given json in parameter
-if args.file:
+
+if args.file and args.points:
     # plt display config
-    open_json(args.file)
+    ab = open_json(args.file)
+    open_points(ab, args.points)
     plt.axis([-5, 15, -5, 15])
     plt.axis("equal")
     plt.legend()
